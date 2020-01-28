@@ -13,6 +13,7 @@
 			</div>
 			@endif
 			<div class="text-right">
+				<a href="/dashboard/category" class="btn btn-primary mb-3 btn-sm">Kategori</a>
 				<a href="/dashboard/newpost" class="btn btn-primary mb-3 btn-sm">Buat Post Baru</a>
 				
 			</div>
@@ -37,10 +38,10 @@
 					</tbody>
 					
 				</table>
-	        @if( $post->count() > 3 )
+	        @if( $data_post->count() >= 1 )
 	        <div class="col-md-12 mt-3">
 	            {{ $data_post->links() }}
-	        </div>
+	        </div> 
 	        @endif
 				
 			</div>

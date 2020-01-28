@@ -21,7 +21,7 @@ class AuthController extends Controller
     		return redirect('/');
     	}
 
-    	return redirect('/login');
+    	return redirect('/login')->with('gagal', 'Email atau Password salah!');
     }
 
     public function logout()
@@ -43,9 +43,15 @@ class AuthController extends Controller
 	        'email' => 'unique:users|max:255',
 	    ]);
 
+        $validatedPass = Validator::make($request->all(), [
+            'password' => 'min:8',
+        ]);
+
 	    if ($validatedData->fails()) {
 	        return redirect('/register')->with('gagal', 'Email sudah terdaftar!');
-	    } else{
+	    } else if($validatedPass->fails()){
+            return redirect('/register')->with('gagal', 'Password kurang dari 8 karakter!');
+        } else{
 	    	$user = User::create($request->all());
 	    	$user->password = bcrypt($request->password);
 	    	$user->role = "user";

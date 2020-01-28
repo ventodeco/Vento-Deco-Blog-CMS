@@ -8,6 +8,11 @@
 		<div class="row">
 			<div class="col-md-4 mt-5 mx-auto">
 			
+				@if(session('gagal'))
+				<div class="alert alert-danger" role="alert">
+				  {{ session('gagal') }}
+				</div>
+				@endif
 				@if(session('sukses'))
 				<div class="alert alert-success" role="alert">
 				  {{ session('sukses') }}

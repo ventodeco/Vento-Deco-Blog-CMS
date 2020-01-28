@@ -20,6 +20,9 @@ Route::post('/postlogin', 'AuthController@postlogin');
 Route::get('/logout', 'AuthController@logout');
 Route::get('/register', 'AuthController@register');
 Route::post('/postregister', 'AuthController@postregister');
+Route::post('/post/{id}/postcomment', 'CommentController@postcomment');
+Route::get('/deletecom/{id}', 'CommentController@delete');
+Route::get('/category/{id}', 'CategoryController@show');
 
 
 Route::group(['middleware' => ['auth','checkRole:admin']], function() {
@@ -29,4 +32,11 @@ Route::group(['middleware' => ['auth','checkRole:admin']], function() {
 	Route::get('/edit/{id}', 'PostController@edit');
 	Route::post('/update/{id}', 'PostController@update');
 	Route::get('/delete/{id}', 'PostController@delete');
+
+	Route::get('/dashboard/category', 'CategoryController@index');
+	Route::post('/dashboard/category/create', 'CategoryController@add');
+	// Route::get('/dashboard/category/edit/{id}', 'CategoryController@edit');
+	Route::get('/dashboard/category/delete/{id}', 'CategoryController@delete');
+
+
 });

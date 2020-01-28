@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Category;
+use App\Comment;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -13,22 +15,24 @@ class PostController extends Controller
     public function index(Request $request)
     {
     	// dd($request->all());
+        $categories = Category::all();
     	if($request->has("search")){
     		$data_post = Post::where('title','LIKE','%'.$request->search.'%')->simplePaginate(3);
             // $data_post = Post::latest()->Paginate(3);
-    	} else{
+    	}else{
     		$data_post = Post::latest()->simplePaginate(3);
             // $data_post = Post::latest()->simplePaginate(3);
     	}
     	// dd($data_post);
     	// $data_post = \App\Post::all();
     	// return view('index', compact('data_post'));
-        return view('index', compact('data_post'));
+        return view('index', [ 'data_post' => $data_post, 'categories' => $categories ]);
     }
 
     public function post(Post $post)
     {
-    	return view('post', compact('post'));
+        $comments = Comment::all();
+    	return view('post', [ 'post' => $post, 'comments' => $comments]);
     }
 
     public function dashboard(Request $request)
@@ -44,13 +48,16 @@ class PostController extends Controller
 
  	public function newpost()
  	{
- 		return view('admin.newpost');
+ 		$categories = Category::all();
+        return view('admin.newpost', compact('categories'));
+
  	}
 
     public function edit($id)
     {
     	$post = Post::find($id);
-    	return view('admin.edit', compact('post'));
+        $categories = Category::all();
+    	return view('admin.edit', [ 'post' => $post, 'categories' => $categories ] );
     }
 
     public function create(Request $request)
@@ -63,7 +70,6 @@ class PostController extends Controller
             $post->image = $request->file('image')->getClientOriginalName();
             $post->save();
         }
-
         $post->user_id = Auth::user()->id;
         $post->save();
 
